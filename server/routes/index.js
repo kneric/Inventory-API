@@ -1,18 +1,53 @@
 const express = require('express');
 const router = express.Router();
 const Item = require('../models/item');
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 router
-  .post('/regiser', (req, res) => {
+  .post('/register', (req, res) => {
+    const {username, password} = req.body;
 
+    User.create({
+      username, password
+    })
+    .then(createdUser => {
+      res.status(201).json({success: true, message: `Account ${createdUser.username} registered`})
+    })
+    .catch(err => {
+      res.status(500).json({message: err});
+    })
   })
 
   .post('/request_token', (req, res) => {
+    const {username, password} = req.body;
 
+    User.findOne({username})
+    .then (user => {
+      if (user){
+        user.checkPwd(password, (isMatched)=> {
+          if(isMatched){
+            let token = jwt.sign({
+              _id: user._id, 
+              username: user.username
+            }, process.env.secretKey)
+            res.status(201).json({
+              token
+            })
+          } else {
+            res.status(403).json({message:'email / password is incorrect'})
+          }
+        })
+      } else {
+        res.status(404).json({message: 'User not found'});
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: err.message});
+    })
   })
 
   .post('/items', (req, res) => {
-    console.log(req.body);
     const {name, price, stock, tags} = req.body
 
     Item.create({
@@ -40,6 +75,11 @@ router
         res.status(500).json({message: err});
       })
     }
+  })
+
+  .post('/decode', (req, res) => {
+    let loggedInUser = jwt.verify(req.body.token, process.env.secretKey);
+    res.status(200).json(loggedInUser);
   })
 
   module.exports = router;

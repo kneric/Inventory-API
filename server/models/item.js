@@ -5,7 +5,11 @@ const ItemSchema = new Schema({
   name: String,
   price: Number,
   stock: Number,
-  tags: [String]
+  tags: [String],
+  user : {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
 }, {timestamps: true})
 
 ItemSchema.statics.addTag = function (tag) {
