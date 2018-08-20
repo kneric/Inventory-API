@@ -15,5 +15,12 @@ router
   })
 
   .get('/', (req, res) => {
-    let q = req.query.query
+    let q = req.query.query;
+
+    if (q){
+      
+
+    } else {
+
+    }
   })
