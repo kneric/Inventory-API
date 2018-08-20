@@ -18,9 +18,12 @@ router
     let q = req.query.query;
 
     if (q){
-      
+
 
     } else {
 
     }
   })
+
+  module.exports = router;
+  

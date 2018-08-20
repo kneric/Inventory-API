@@ -87,118 +87,25 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="row my-4">
-              <div class="col-lg-4 col-md-6 mb-4">
+              <div class="col-lg-4 col-md-6 mb-4" v-for="item in items">
                 <div class="card h-100">
                   <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                   <div class="card-body">
                     <h4 class="card-title">
-                      <a href="#">Item One</a>
+                      <a href="#">{{item.name}}</a>
                     </h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Stock: 20pcs</p>
+                    <h5>{{convertPrice(item.price)}}</h5>
+                    <p class="card-text">Stock: {{item.stock}} pcs</p>
                   </div>
                   <div class="card-footer">
-                    <span class="badge badge-primary tag">
-                      Kitchen
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Electric
+                    Tags:
+                    <span class="badge badge-primary tag" v-for="tag in item.tags">
+                      {{tag}}
+                      tag
                     </span>
                   </div>
                 </div>
               </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-body">
-                    <h4 class="card-title">
-                      <a href="#">Item Two</a>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Stock: 20pcs</p>
-                  </div>
-                  <div class="card-footer">
-                    <span class="badge badge-primary tag">
-                      Kitchen
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Juicer
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-body">
-                    <h4 class="card-title">
-                      <a href="#">Item Three</a>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Stock: 20pcs</p>
-                  </div>
-                  <div class="card-footer">
-                    <span class="badge badge-primary tag">
-                      Cook
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Healthy
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Fruits
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Electric
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-body">
-                    <h4 class="card-title">
-                      <a href="#">Item Four</a>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Stock: 20pcs</p>
-                  </div>
-                  <div class="card-footer">
-                    <span class="badge badge-primary tag">
-                      Kitchen
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Electric
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                  <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                  <div class="card-body">
-                    <h4 class="card-title">
-                      <a href="#">Item Five</a>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p class="card-text">Stock: 20pcs</p>
-                  </div>
-                  <div class="card-footer">
-                    <span class="badge badge-primary tag">
-                      Kitchen
-                    </span>
-                    <span class="badge badge-primary tag">
-                      Electric
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-
 
             </div>
             <!-- /.row -->
@@ -278,6 +185,13 @@
             }
 
           ]
+        },
+        computed:{
+          convertPrice: function () {
+            return function (price){
+              return ('Rp.' + Number(price).toLocaleString() + '.00') 
+            }
+          }
         }
       })
     </script>
