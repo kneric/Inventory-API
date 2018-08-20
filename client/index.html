@@ -11,9 +11,8 @@
   <body>
 
     <div id="app">
-
-    
-
+      <script src="./js/main.js"></script>
+  
       <!-- Navigation -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
@@ -32,7 +31,7 @@
       <!-- Page Content -->
       <div class="container">
         <div class="my-4">
-          <div class="success-alert" style="">
+          <div class="success-alert">
             <div class="alert alert-success">
               Login success
             </div>
@@ -48,21 +47,21 @@
           <h2>Create new Item</h2>
           <div class="form-group">
             <label for="name">Name:</label>
-            <input v-model="input_name" type="text" class="form-control">
+            <input id="input_name" v-model="input_name" type="text" class="form-control">
           </div>
           <div class="form-group">
             <label for="price">Price:</label>
-            <input v-model="input_price" type="text" class="form-control">
+            <input id="input_price" v-model="input_price" type="text" class="form-control">
           </div>
           <div class="form-group">
             <label for="stock">Stock:</label>
-            <input v-model="input_stock" type="text" class="form-control">
+            <input id="input_stock" v-model="input_stock" type="text" class="form-control">
           </div>
           <div class="form-group">
             <label for="tags">Tags:</label>
-            <input v-model="input_tags" type="text" class="form-control">
+            <input id="input_tags" v-model="input_tags" type="text" class="form-control">
           </div>
-          <button type="submit" class="btn btn-primary" @click="addItem">Submit</button>
+          <button type="submit" class="btn btn-primary" onclick="addItem">Submit</button>
           <hr>
         </div>
 
@@ -80,7 +79,7 @@
             <label for="tags">Tags:</label>
             <input v-model="input_tags" type="text" class="form-control">
           </div>
-          <button type="submit" class="btn btn-primary" @click="searchItem">Search</button>
+          <button type="submit" class="btn btn-primary" onclick="searchItem">Search</button>
           <hr>
         </div>
 
@@ -89,7 +88,7 @@
             <div class="row my-4">
               <div class="col-lg-4 col-md-6 mb-4" v-for="item in items">
                 <div class="card h-100">
-                  <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                  <a href="#"><img class="card-img-top" alt=""></a>
                   <div class="card-body">
                     <h4 class="card-title">
                       <a href="#">{{item.name}}</a>
@@ -106,13 +105,13 @@
                   </div>
                 </div>
               </div>
-
+    
             </div>
             <!-- /.row -->
-
+    
           </div>
           <!-- /.col-lg-9 -->
-
+    
         </div>
         <!-- /.row -->
 
@@ -149,7 +148,13 @@
 
     </div>
 
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+  </body>
+  <script>
       var app = new Vue({
         el: '#app',
         data: {
@@ -183,25 +188,44 @@
                 "Pop up toaster"
               ]
             }
-
-          ]
+          ],
+          input_name: '',
+          input_price: '',
+          input_tags: '',
+          input_stock: '',
         },
         computed:{
           convertPrice: function () {
             return function (price){
               return ('Rp.' + Number(price).toLocaleString() + '.00') 
             }
+          },
+          searchItem(){
+            let nameQ = this.items.filter(item => {
+              return item.toLowerCase().includes(this.input_name.toLowerCase)
+            })
+            let priceQ = this.items.filter(item => {
+              return item.toLowerCase().includes(this.input_price.toLowerCase)
+            })
+            let tagQ = this.items.filter(item => {
+              return item.toLowerCase().includes(this.input_tag.toLowerCase)
+            })
+            return nameQ
           }
+        },
+        created: function (){
+          console.log('masuk');
+          // axios.get('http://localhost:3000/?query=' + $('#input_name') + $('#input_price') + $('#input_stock') + $('#input_tags'))
+          axios.get('http://localhost:3000/')
+          .then(response => {
+            this.items = response.data
+          })
+          .catch(err => {
+            console.log(err);
+          })
         }
       })
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-
-
-
-  </body>
+    <script src="./js/components/item.js"></script>
 </html>
