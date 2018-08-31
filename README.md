@@ -1,2 +1,2 @@
 # Inventory-API
-phase 2 
+phase 2 LC1
